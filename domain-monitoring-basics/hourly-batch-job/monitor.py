@@ -39,7 +39,7 @@ def check_domains(domains: list, your_domain: str) -> None:
         if value < MINIMUM_THRESHOLD:
             alert(your_domain, ct_log_domain)
         else:
-            logger.info(f"Ok. {ct_log_domain} is NOT similar to {your_domain} ...")
+            logger.info(f"{ct_log_domain} is NOT similar to {your_domain} ...")
 
 
 def get_previous_date_and_hour_utc():
