@@ -15,7 +15,7 @@ client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 
 # todo: Adjust your threshold based on your metrics
-MINIMUM_THRESHOLD = 15
+MINIMUM_THRESHOLD = 2
 
 
 def alert(your_domain: str, ct_log_domain: str) -> None:
@@ -37,15 +37,15 @@ def check_domains(domains: list, your_domain: str) -> None:
         ct_log_domain = domain_obj["domain_name"]
         value = metric(your_domain, ct_log_domain)
         # if the similarity threshold is exceeded, create alert!
-        if value < MINIMUM_THRESHOLD:
+        if value <= MINIMUM_THRESHOLD:
             alert(your_domain, ct_log_domain)
         else:
-            logger.info(f"Ok. {ct_log_domain} is NOT similar to {your_domain} ...")
+            logger.info(f"{ct_log_domain} is NOT similar to {your_domain} ...")
 
 
 def monitor_domains(domain_name: str, token: str, start_from_id: str = None) -> str:
     # url params
-    params = {"limit": 1000}
+    params = {"limit": 3000}
     if start_from_id is not None:
         params["start_from_id"] = start_from_id
 
@@ -86,8 +86,8 @@ def monitor_continuously(domain_name: str) -> None:
             # update start_id to request the latest domains
             start_id = monitor_domains(domain_name, token=token, start_from_id=start_id)
             # pause for a second to avoid rate-limit errors
-            logger.info("Waiting 1 second(s) before fetching next batch.")
-            time.sleep(1.0)
+            logger.info("Waiting 0.5 seconds before fetching next batch.")
+            time.sleep(0.5)
 
         except requests.exceptions.HTTPError as e:
             # catch expired token errors
