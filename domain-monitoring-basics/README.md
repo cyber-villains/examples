@@ -1,6 +1,10 @@
 # Domain Monitoring Basics
 
-This is the source code for the [Domain-Monitoring-Basics](https://villain.network/about/tutorials/domain-monitoring-basics) tutorial.
+This is the source code for the [Domain-Monitoring-Basics](https://typovillain.com/about/tutorials/domain-monitoring-basics) tutorial.
+
+[Sign up](https://typovillain.com/) for a free account to get started.
+
+## Quickstart
 
 Building and running examples:
 - `docker build . -t hourly-batch-job`
