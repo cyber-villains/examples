@@ -45,7 +45,7 @@ def check_domains(domains: list, your_domain: str) -> None:
 
 def monitor_domains(domain_name: str, token: str, start_from_id: str = None) -> str:
     # url params
-    params = {"limit": 3000}
+    params = {"limit": 10}
     if start_from_id is not None:
         params["start_from_id"] = start_from_id
 
@@ -64,14 +64,9 @@ def monitor_domains(domain_name: str, token: str, start_from_id: str = None) -> 
     # all latest domains from the last request have now been checked,
     # and alerts generated for any that were similar to your_domain
 
-    if start_from_id is None:
-        # if this is the "first" call, return the last id to be used
-        # as the `start_from_id` in next the function call
-        next_start_id = domains_response["domains"][0]["id"]
-    else:
-        # otherwise, use the last id as parameter to the next call
-        next_start_id = domains_response["domains"][-1]["id"]
-
+    # return the last id to be used as the `start_from_id`
+    # in next the function call
+    next_start_id = domains_response["domains"][-1]["id"]
     return next_start_id
 
 
@@ -85,9 +80,9 @@ def monitor_continuously(domain_name: str) -> None:
         try:
             # update start_id to request the latest domains
             start_id = monitor_domains(domain_name, token=token, start_from_id=start_id)
-            # pause for a second to avoid rate-limit errors
-            logger.info("Waiting 0.5 seconds before fetching next batch.")
+            # pause briefly to avoid rate-limit errors
             time.sleep(0.5)
+            logger.info(f"Fetching next batch starting with id={start_id}")
 
         except requests.exceptions.HTTPError as e:
             # catch expired token errors

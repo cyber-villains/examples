@@ -1,8 +1,8 @@
 import requests
 
 
-BASE_URL = "https://certificate.stream"
-TOKEN_ENDPOINT = "https://api.villain.network/oauth2/token"
+BASE_URL = "https://certificate.stream/v1"
+TOKEN_ENDPOINT = "https://api.typovillain.com/oauth2/token"
 
 
 def get_token(id, secret) -> str:
